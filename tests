@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const WHALE_ID = '22gg11022@gne.go.kr';
-const WHALE_PW = '22gg11022!@';
+const WHALE_ID = '??';
+const WHALE_PW = '??';
 
 test('studyA 회원가입 → 웨일 로그인 확인', async ({ page }) => {
   // 1. 홈페이지 접속
