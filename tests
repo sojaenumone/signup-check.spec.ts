@@ -1,0 +1,47 @@
+import { test, expect } from '@playwright/test';
+
+const WHALE_ID = '22gg11022@gne.go.kr';
+const WHALE_PW = '22gg11022!@';
+
+test('studyA 회원가입 → 웨일 로그인 확인', async ({ page }) => {
+  // 1. 홈페이지 접속
+  await page.goto('https://dev.studya.ai/');
+  await expect(page).toHaveTitle(/studyA/i);
+
+  // 2. 팝업 닫기 ("오늘은 그만" 버튼이 보일 때까지 기다림)
+  const closeBtn = page.getByRole('button', { name: '오늘은 그만' });
+  await expect(closeBtn).toBeVisible({ timeout: 5000 });
+  await closeBtn.click();
+
+  // 3. 회원가입 버튼 클릭
+  const joinBtn = page.getByRole('button', { name: '회원가입' });
+  await expect(joinBtn).toBeVisible();
+  await joinBtn.click();
+
+  // 4. 웨일 계정으로 시작하기 클릭
+  const whaleLoginLink = page.getByRole('link', { name: /Whalespace logo/i });
+  await expect(whaleLoginLink).toBeVisible();
+  await whaleLoginLink.click();
+
+  // 5. 웨일 로그인 ID 입력
+  const idBox = page.getByRole('textbox', { name: 'ID' });
+  await expect(idBox).toBeVisible();
+  await idBox.fill(WHALE_ID);
+
+  // 6. 웨일 로그인 PW 입력
+  const pwBox = page.getByRole('textbox', { name: /password/i });
+  await expect(pwBox).toBeVisible();
+  await pwBox.fill(WHALE_PW);
+
+  // 7. 로그인 버튼 클릭
+  const loginBtn = page.getByRole('button', { name: /로그인|Login/i });
+  await expect(loginBtn).toBeVisible();
+  await loginBtn.click();
+
+  // 8. 로그인 성공 확인 (웨일 버튼 나타나는지 체크)
+  const whaleBtn = page.getByRole('button', { name: '웨일' });
+  await expect(whaleBtn).toBeVisible({ timeout: 15000 });
+  await whaleBtn.click();
+
+  console.log('✅ 전체 과정이 순조롭게 진행되었습니다.');
+});
